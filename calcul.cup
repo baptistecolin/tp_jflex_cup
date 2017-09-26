@@ -5,21 +5,29 @@ import java.util.*;
 import java.io.*;
 import java.lang.Math;
 
+
 parser code {:
   public static void main(String args[]) throws Exception {
     new Parser(new Lexer(new InputStreamReader(System.in))).parse();
   }
 :}
 
+action code {:
+  Map<String,Double> varMap = new HashMap<String,Double>();  
+:}
+
 // definition des token
-terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW;
+terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN;
 terminal Double TK_VAL, TK_PI, TK_E; 
+terminal String TK_ID;
 
 // definition des etats intermediaires
 non terminal commandes, commande;
 non terminal Double expression;
+non terminal String assignation;
 
 // associativite et priorite des operateurs
+precedence left TK_ASSIGN;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV;
 precedence left TK_UMINUS;
@@ -37,6 +45,9 @@ commandes ::=
 commande ::=
     expression:e // expression seule, affichage
 	{: System.out.println("# " + e); :}
+    TK_DONE
+  | assignation:a // assignation d'une valeur à une variable, seule, pios message de confirmation
+  {: System.out.println("# " + a); :}
     TK_DONE
 ;
 
@@ -69,8 +80,16 @@ expression ::=
   {: RESULT = e1 ; :}
   | TK_VAL:v // valeur
 	{: RESULT = v; :}
+  | TK_ID:x // valeur de la variable
+  {: RESULT = varMap.get(x) ; :}
   | TK_PI // évalue pi
   {: RESULT = Math.PI; :}
   | TK_E // évalue e
   {: RESULT = Math.E; :}
+;
+
+assignation ::=
+    TK_ID:x TK_ASSIGN expression:e1
+  {: varMap.put(x, e1);
+  RESULT = x + " = " + e1 ; :}
 ;
