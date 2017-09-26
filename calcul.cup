@@ -3,6 +3,7 @@
 import java_cup.runtime.*;
 import java.util.*;
 import java.io.*;
+import java.lang.Math;
 
 parser code {:
   public static void main(String args[]) throws Exception {
@@ -11,7 +12,7 @@ parser code {:
 :}
 
 // definition des token
-terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA;
+terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN;
 terminal Double TK_VAL; 
 
 // definition des etats intermediaires
@@ -22,7 +23,7 @@ non terminal Double expression;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV;
 precedence left TK_UMINUS;
-precedence left TK_OPBRA;
+precedence left TK_OPBRA, TK_SIN;
 precedence right TK_CLBRA;
 
 // objectif
@@ -50,7 +51,9 @@ expression ::=
   {: RESULT = e1 / e2 ; :}
   | TK_UMINUS expression:e1 // moins unaire
   {: RESULT = -e1 ; :}
-  | TK_OPBRA expression:e1 TK_CLBRA
+  | TK_SIN TK_OPBRA expression:e1 TK_CLBRA // évalue le sinus de l'expression entre parenthèses
+  {: RESULT = Math.sin(e1); :}
+  | TK_OPBRA expression:e1 TK_CLBRA // évalue l'expression entre parenthèses
   {: RESULT = e1 ; :}
   | TK_VAL:v // valeur
 	{: RESULT = v; :}
