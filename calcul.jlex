@@ -31,6 +31,7 @@ import java.io.*;
 "sqrt" {return new Symbol(sym.TK_SQRT); }
 "ln" {return new Symbol(sym.TK_LN); }
 "exp" {return new Symbol(sym.TK_EXP); }
+"^" {return new Symbol(sym.TK_POW); }
 (\n|\r|\r\n)	{ return new Symbol(sym.TK_DONE); }
 [\ \t\f] { /* ignore espaces et assimiles. */ }
 .	{ System.err.println("unexpected char '" + yytext() +
