@@ -13,7 +13,7 @@ parser code {:
 
 // definition des token
 terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW;
-terminal Double TK_VAL; 
+terminal Double TK_VAL, TK_PI, TK_E; 
 
 // definition des etats intermediaires
 non terminal commandes, commande;
@@ -63,10 +63,14 @@ expression ::=
   {: RESULT = Math.log(e1); :}
   | TK_EXP TK_OPBRA expression:e1 TK_CLBRA // évalue l'exponentielle de l'expression entre parenthèses
   {: RESULT = Math.exp(e1); :}
-  | expression:e1 TK_POW expression:e2
+  | expression:e1 TK_POW expression:e2 // effectue l'exponentiation
   {: RESULT = Math.pow(e1,e2); :}
   | TK_OPBRA expression:e1 TK_CLBRA // évalue l'expression entre parenthèses
   {: RESULT = e1 ; :}
   | TK_VAL:v // valeur
 	{: RESULT = v; :}
+  | TK_PI // évalue pi
+  {: RESULT = Math.PI; :}
+  | TK_E // évalue e
+  {: RESULT = Math.E; :}
 ;
