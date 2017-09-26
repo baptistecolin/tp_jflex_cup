@@ -22,6 +22,9 @@ import java.io.*;
 "-" { return new Symbol(sym.TK_MINUS); }
 "*" { return new Symbol(sym.TK_MULT); }
 "/" { return new Symbol(sym.TK_DIV); }
+"_" { return new Symbol(sym.TK_UMINUS); }
+"(" { return new Symbol(sym.TK_OPBRA); }
+")" { return new Symbol(sym.TK_CLBRA); }
 (\n|\r|\r\n)	{ return new Symbol(sym.TK_DONE); }
 [\ \t\f] { /* ignore espaces et assimiles. */ }
 .	{ System.err.println("unexpected char '" + yytext() +

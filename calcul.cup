@@ -11,7 +11,7 @@ parser code {:
 :}
 
 // definition des token
-terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_DONE;
+terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA;
 terminal Double TK_VAL; 
 
 // definition des etats intermediaires
@@ -21,6 +21,9 @@ non terminal Double expression;
 // associativite et priorite des operateurs
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV;
+precedence left TK_UMINUS;
+precedence left TK_OPBRA;
+precedence right TK_CLBRA;
 
 // objectif
 start with commandes;
@@ -45,6 +48,10 @@ expression ::=
   {: RESULT = e1 * e2 ; :}
   | expression:e1 TK_DIV expression:e2 // effectue la division
   {: RESULT = e1 / e2 ; :}
+  | TK_UMINUS expression:e1 // moins unaire
+  {: RESULT = -e1 ; :}
+  | TK_OPBRA expression:e1 TK_CLBRA
+  {: RESULT = e1 ; :}
   | TK_VAL:v // valeur
 	{: RESULT = v; :}
 ;
