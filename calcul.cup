@@ -17,7 +17,7 @@ action code {:
 :}
 
 // definition des token
-terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN;
+terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ALLVAR;
 terminal Double TK_VAL, TK_PI, TK_E; 
 terminal String TK_ID;
 
@@ -48,6 +48,19 @@ commande ::=
     TK_DONE
   | assignation:a // assignation d'une valeur à une variable, seule, pios message de confirmation
   {: System.out.println("# " + a); :}
+    TK_DONE
+  | TK_ALLVAR
+  {:  
+    long i=0;
+    Iterator<Map.Entry<String,Double>> it = varMap.entrySet().iterator();
+    if(!it.hasNext()){
+      System.out.println("Aucune variable définie");
+    }
+    while(it.hasNext()){
+      Map.Entry<String,Double> pair = it.next();
+      System.out.println("# " + pair.getKey() + " = " + pair.getValue());
+    }
+  :}
     TK_DONE
 ;
 
@@ -81,7 +94,13 @@ expression ::=
   | TK_VAL:v // valeur
 	{: RESULT = v; :}
   | TK_ID:x // valeur de la variable
-  {: RESULT = varMap.get(x) ; :}
+  {: 
+    if(varMap.containsKey(x)){
+      RESULT = varMap.get(x) ;
+    } else {
+      System.out.println("# " + x + " n'est pas défini");
+    }
+  :}
   | TK_PI // évalue pi
   {: RESULT = Math.PI; :}
   | TK_E // évalue e
