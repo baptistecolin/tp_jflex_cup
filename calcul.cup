@@ -14,10 +14,17 @@ parser code {:
 
 action code {:
   Map<String,Double> varMap = new HashMap<String,Double>();  
+  static String TRUE = new String("true");
+  static String FALSE = new String("false");
+  static double ONE = 1.0d;
+  static double ZERO = 0.0d;
+
+  //varMap.put(TRUE, ONE);
+  //varMap.put(FALSE, ZERO);
 :}
 
 // definition des token
-terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ALLVAR;
+terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ALLVAR, TK_AND, TK_OR, TK_NOT, TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ;
 terminal Double TK_VAL, TK_PI, TK_E; 
 terminal String TK_ID;
 
@@ -28,8 +35,8 @@ non terminal String assignation;
 
 // associativite et priorite des operateurs
 precedence left TK_ASSIGN;
-precedence left TK_PLUS, TK_MINUS;
-precedence left TK_MULT, TK_DIV;
+precedence left TK_PLUS, TK_MINUS, TK_AND, TK_OR;
+precedence left TK_MULT, TK_DIV, TK_NOT, TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ;
 precedence left TK_UMINUS;
 precedence left TK_OPBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW;
 precedence right TK_CLBRA;
@@ -105,6 +112,62 @@ expression ::=
   {: RESULT = Math.PI; :}
   | TK_E // évalue e
   {: RESULT = Math.E; :}
+  | expression:e1 TK_AND expression:e2 // et logique
+  {: 
+    if(e1==1.0 && e2==1.0){
+      RESULT = 1.0;
+    } else {
+      RESULT = 0.0;
+    }
+  :}
+  | expression:e1 TK_OR expression:e2 // ou logique
+  {:
+    if(e1==1 || e2==1){
+      RESULT = 1.0;
+    } else {
+      RESULT = 0.0;
+    }
+  :}
+  | TK_NOT expression:e1 // non logique
+  {:
+    if(e1==1){
+      RESULT = 0.0;
+    } else {
+      RESULT = 1.0;
+    }
+  :}
+  | expression:e1 TK_SUP expression:e2
+  {:
+    if(e1 > e2) {
+      RESULT = 1.0;
+    } else {
+      RESULT = 0.0;
+    }
+  :}
+  | expression:e1 TK_SUPEQ expression:e2
+  {:
+    if(e1 >= e2) {
+      RESULT = 1.0;
+    } else {
+      RESULT = 0.0;
+    }
+  :}
+  | expression:e1 TK_LOW expression:e2
+  {:
+    if(e1 < e2) {
+      RESULT = 1.0;
+    } else {
+      RESULT = 0.0;
+    }
+  :}
+  | expression:e1 TK_LOWEQ expression:e2
+  {:
+    if(e1 <= e2) {
+      RESULT = 1.0;
+    } else {
+      RESULT = 0.0;
+    }
+  :}
 ;
 
 assignation ::=

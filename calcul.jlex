@@ -19,6 +19,22 @@ import java.io.*;
 %%
 "(" { return new Symbol(sym.TK_OPBRA); }
 ")" { return new Symbol(sym.TK_CLBRA); }
+">=" { return new Symbol(sym.TK_SUPEQ); }
+"<=" { return new Symbol(sym.TK_LOWEQ); }
+">" { return new Symbol(sym.TK_SUP); }
+"<" { return new Symbol(sym.TK_LOW); }
+"and" { return new Symbol(sym.TK_AND); }
+"or" { return new Symbol(sym.TK_OR); }
+"not" { return new Symbol(sym.TK_NOT); }
+"sin" { return new Symbol(sym.TK_SIN); }
+"cos" { return new Symbol(sym.TK_COS); }
+"tan" { return new Symbol(sym.TK_TAN); }
+"sqrt" { return new Symbol(sym.TK_SQRT); }
+"ln" { return new Symbol(sym.TK_LN); }
+"exp" { return new Symbol(sym.TK_EXP); }
+"e" { return new Symbol(sym.TK_E); }
+"pi" { return new Symbol(sym.TK_PI); }
+"variables" { return new Symbol(sym.TK_ALLVAR); }
 [0-9]+  { return new Symbol(sym.TK_VAL, new Double(yytext())); }
 [a-zA-Z]+ { return new Symbol(sym.TK_ID, new String(yytext())); }
 "**" { return new Symbol(sym.TK_POW); }
@@ -27,15 +43,6 @@ import java.io.*;
 "*" { return new Symbol(sym.TK_MULT); }
 "/" { return new Symbol(sym.TK_DIV); }
 "_" { return new Symbol(sym.TK_UMINUS); }
-"$sin" { return new Symbol(sym.TK_SIN); }
-"$cos" { return new Symbol(sym.TK_COS); }
-"$tan" { return new Symbol(sym.TK_TAN); }
-"$sqrt" { return new Symbol(sym.TK_SQRT); }
-"$ln" { return new Symbol(sym.TK_LN); }
-"$exp" { return new Symbol(sym.TK_EXP); }
-"$e" { return new Symbol(sym.TK_E); }
-"$pi" { return new Symbol(sym.TK_PI); }
-"$variables" { return new Symbol(sym.TK_ALLVAR); }
 "=" { return new Symbol(sym.TK_ASSIGN); }
 (\n|\r|\r\n)	{ return new Symbol(sym.TK_DONE); }
 
