@@ -36,6 +36,7 @@ import java.io.*;
 "e" { return new Symbol(sym.TK_E); }
 "pi" { return new Symbol(sym.TK_PI); }
 "variables" { return new Symbol(sym.TK_ALLVAR); }
+"exit" { return new Symbol(sym.TK_EXIT); }
 [0-9]+  { return new Symbol(sym.TK_VAL, new Double(yytext())); }
 [a-zA-Z]+ { return new Symbol(sym.TK_ID, new String(yytext())); }
 "**" { return new Symbol(sym.TK_POW); }
@@ -45,6 +46,8 @@ import java.io.*;
 "/" { return new Symbol(sym.TK_DIV); }
 "_" { return new Symbol(sym.TK_UMINUS); }
 "=" { return new Symbol(sym.TK_ASSIGN); }
+"?" { return new Symbol(sym.TK_CONDI); }
+":" { return new Symbol(sym.TK_CONDI2); }
 (\n|\r|\r\n)	{ return new Symbol(sym.TK_DONE); }
 
 [\ \t\f] { /* ignore espaces et assimiles. */ }

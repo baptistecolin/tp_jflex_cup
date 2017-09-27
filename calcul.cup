@@ -21,13 +21,13 @@ action code {:
 :}
 
 init with {:
-  // varMap.put("true", 1.0d);
-  // varMap.put("false", 0.0d);
+  //varMap.put("true", 1.0d);
+  //varMap.put("false", 0.0d);
 :}
 
 
 // definition des token
-terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ALLVAR, TK_AND, TK_OR, TK_NOT, TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL;
+terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ALLVAR, TK_AND, TK_OR, TK_NOT, TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL, TK_EXIT, TK_CONDI, TK_CONDI2;
 terminal Double TK_VAL, TK_PI, TK_E; 
 terminal String TK_ID;
 
@@ -41,7 +41,7 @@ precedence left TK_ASSIGN;
 precedence left TK_PLUS, TK_MINUS, TK_AND, TK_OR;
 precedence left TK_MULT, TK_DIV, TK_NOT, TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL;
 precedence left TK_UMINUS;
-precedence left TK_OPBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW;
+precedence left TK_OPBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_EXIT, TK_CONDI;
 precedence right TK_CLBRA;
 
 // objectif
@@ -50,6 +50,9 @@ start with commandes;
 commandes ::=
     commande
   | commandes commande
+  | error
+  {: System.out.println("Expression incorrecte"); :}
+    TK_DONE
 ;
 
 commande ::=
@@ -70,6 +73,11 @@ commande ::=
       Map.Entry<String,Double> pair = it.next();
       System.out.println("# " + pair.getKey() + " = " + pair.getValue());
     }
+  :}
+    TK_DONE
+  | TK_EXIT
+  {:
+    System.exit(0);
   :}
     TK_DONE
 ;
@@ -177,6 +185,14 @@ expression ::=
       RESULT = 1.0;
     } else {
       RESULT = 0.0;
+    }
+  :}
+  | expression:e1 TK_CONDI expression:e2 TK_CONDI2 expression:e3
+  {:
+    if(e1.equals(1.0)) {
+      RESULT = e2;
+    } else {
+      RESULT = e3;
     }
   :}
 ;
