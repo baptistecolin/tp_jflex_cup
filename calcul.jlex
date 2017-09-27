@@ -40,6 +40,8 @@ import java.io.*;
 "pi" { return new Symbol(sym.TK_PI); }
 "variables" { return new Symbol(sym.TK_ALLVAR); }
 "exit" { return new Symbol(sym.TK_EXIT); }
+"Infinity" { return new Symbol(sym.TK_INF); }
+"NaN" { return new Symbol(sym.TK_NAN); }
 [0-9]+  { return new Symbol(sym.TK_VAL, new Double(yytext())); }
 [a-zA-Z]+ { return new Symbol(sym.TK_ID, new String(yytext())); }
 "**" { return new Symbol(sym.TK_POW); }

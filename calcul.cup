@@ -29,7 +29,7 @@ init with {:
 // definition des token
 terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, 
          TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ASSIGNPLUS, TK_ASSIGNMINUS, TK_ASSIGNMULT, TK_ALLVAR, TK_AND, TK_OR, TK_NOT, 
-         TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL, TK_EXIT, TK_CONDI, TK_CONDI2;
+         TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL, TK_EXIT, TK_CONDI, TK_CONDI2, TK_INF, TK_NAN;
 terminal Double TK_VAL, TK_PI, TK_E; 
 terminal String TK_ID;
 
@@ -197,6 +197,10 @@ expression ::=
       RESULT = e3;
     }
   :}
+  | TK_NAN
+  {: RESULT = Double.NaN; :}
+  | TK_INF
+  {: RESULT = Double.POSITIVE_INFINITY; :}
 ;
 
 assignation ::=
