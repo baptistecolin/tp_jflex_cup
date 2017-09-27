@@ -13,6 +13,24 @@ exécution :
 	# 5.0
 	(ctrl+D pour quitter)
 
+Liste des commandes disponibles :
+
+()                  parenthèses prioritaires
+>=, <=, >, <, ==    comparaisons
+=                   assignation
++=, -=, *=          assignation incrémentale
+and, or, not        opérateurs logiques
++, -, *, /          opérateurs mathématiques
+sin, cos, tan, sqrt...  fonctions mathématiques
+_                   moins unaire
+;                   fin de commande (facultatif)
+?                   opérateur ternaire
+**                  exponentiation
+variables           affiche toutes les variables déjà assignées
+exit                quitte la calculatrice
+e, pi               constantes mathématiques
+
+
 nettoyage :
 
 	sh> make clean
