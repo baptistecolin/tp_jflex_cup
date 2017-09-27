@@ -27,7 +27,9 @@ init with {:
 
 
 // definition des token
-terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ALLVAR, TK_AND, TK_OR, TK_NOT, TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL, TK_EXIT, TK_CONDI, TK_CONDI2, TK_SEMI;
+terminal TK_PLUS, TK_MINUS, TK_MULT, TK_DIV, TK_UMINUS, TK_DONE, TK_OPBRA, TK_CLBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, 
+         TK_LN, TK_EXP, TK_POW, TK_ASSIGN, TK_ASSIGNPLUS, TK_ASSIGNMINUS, TK_ASSIGNMULT, TK_ALLVAR, TK_AND, TK_OR, TK_NOT, 
+         TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL, TK_EXIT, TK_CONDI, TK_CONDI2;
 terminal Double TK_VAL, TK_PI, TK_E; 
 terminal String TK_ID;
 
@@ -37,11 +39,11 @@ non terminal Double expression;
 non terminal String assignation;
 
 // associativite et priorite des operateurs
-precedence left TK_ASSIGN;
+precedence left TK_ASSIGN, TK_ASSIGNPLUS, TK_ASSIGNMULT, TK_ASSIGNMINUS;
 precedence left TK_PLUS, TK_MINUS, TK_AND, TK_OR;
 precedence left TK_MULT, TK_DIV, TK_NOT, TK_SUP, TK_SUPEQ, TK_LOW, TK_LOWEQ, TK_EQUAL;
 precedence left TK_UMINUS;
-precedence left TK_OPBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_EXIT, TK_CONDI, TK_SEMI;
+precedence left TK_OPBRA, TK_SIN, TK_COS, TK_TAN, TK_SQRT, TK_LN, TK_EXP, TK_POW, TK_EXIT, TK_CONDI;
 precedence right TK_CLBRA;
 
 // objectif
@@ -201,4 +203,24 @@ assignation ::=
     TK_ID:x TK_ASSIGN expression:e1
   {: varMap.put(x, e1);
   RESULT = x + " = " + e1 ; :}
-;
+  | TK_ID:x TK_ASSIGNPLUS expression:e1
+  {:
+    double initialValue = varMap.get(x);
+    varMap.put(x, initialValue + e1);
+    RESULT = x + " = " + (initialValue + e1);
+  :}
+  | TK_ID:x TK_ASSIGNMINUS expression:e1
+  {:
+    double initialValue = varMap.get(x);
+    varMap.put(x, initialValue - e1);
+    RESULT = x + " = " + (initialValue - e1);
+  :}
+  | TK_ID:x TK_ASSIGNMULT expression:e1
+  {:
+    double initialValue = varMap.get(x);
+    varMap.put(x, initialValue * e1);
+    RESULT = x + " = " + (initialValue * e1);
+  :}
+; 
+
+
