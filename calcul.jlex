@@ -48,6 +48,7 @@ import java.io.*;
 "=" { return new Symbol(sym.TK_ASSIGN); }
 "?" { return new Symbol(sym.TK_CONDI); }
 ":" { return new Symbol(sym.TK_CONDI2); }
+";" { return new Symbol(sym.TK_DONE); }
 (\n|\r|\r\n)	{ return new Symbol(sym.TK_DONE); }
 
 [\ \t\f] { /* ignore espaces et assimiles. */ }
